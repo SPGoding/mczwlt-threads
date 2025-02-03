@@ -217,7 +217,7 @@
 
 ![notch-dithering-effect.png](https://forum.mczwlt.net/assets/uploads/files/1738559075082-40dbb175-f103-46d0-bb6e-8ffdf748601e.png) 
 
-[assets/minecraft/shaders/post/spider.json](https://drive.google.com/file/d/1lEW6WRHa0xN041qNNhr2XvpspiXK7A6g/view?usp=sharing)
+`assets/minecraft/shaders/post/spider.json`
 
 ```json
 {
@@ -328,7 +328,7 @@
 
 以下是一个可以正常运作的完整的着色器程序 JSON 文件。这是原版的 "wobble" 着色器，未经修改。
 
-[assets/minecraft/shaders/program/wobble.json](https://drive.google.com/file/d/1GssoJB9wQrj-POC_DZ--Rewmfvz9QvEq/view?usp=sharing)
+`assets/minecraft/shaders/program/wobble.json`
 
 ```json
 {
@@ -695,7 +695,63 @@ if (texCoord.x == 731031) { gl_FragColor = texture2D(DiffuseSampler, texCoord); 
 
 ![trick-blit-2.png](https://forum.mczwlt.net/assets/uploads/files/1738561230666-1fbac1a4-5fcd-434b-b6d4-ba40e75c809e.png) 
 
-下载：[着色器程序 JSON 文件](https://drive.google.com/file/d/1LIYFv588QcbjmFHObk4sgWqCc1I5CDzq/view?usp=sharing)，[.vsh GLSL 文件](https://drive.google.com/file/d/1_pjORoiga0TT_KB5UrYwMCHIB9mvDmQd/view?usp=sharing)
+着色器程序 JSON 文件：
+
+```json
+{
+    "blend": {
+        "func": "add",
+        "srcrgb": "one",
+        "dstrgb": "zero"
+    },
+    "vertex": "copy",
+    "fragment": "blit",
+    "attributes": [ "Position" ],
+    "samplers": [
+        { "name": "DiffuseSampler" }
+    ],
+    "uniforms": [
+        { "name": "ProjMat",       "type": "matrix4x4", "count": 16, "values": [ 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0 ] },
+        { "name": "InSize",        "type": "float",     "count": 2,  "values": [ 1.0, 1.0 ] },
+        { "name": "OutSize",       "type": "float",     "count": 2,  "values": [ 1.0, 1.0 ] },
+        { "name": "Time",          "type": "float",     "count": 1,  "values": [ 0.0 ] },
+        { "name": "ColorModulate", "type": "float",     "count": 4,  "values": [ 1.0, 1.0, 1.0, 1.0 ] }
+    ]
+}
+```
+
+`.vsh` GLSL 文件：
+
+```glsl
+#version 120
+
+attribute vec4 Position;
+
+uniform mat4 ProjMat;
+uniform vec2 OutSize;
+uniform vec2 InSize;
+
+varying vec2 texCoord;
+
+// Modified blit to work for copying between buffers of different sizes
+
+void main(){
+
+    float x = -1.0; 
+    float y = -1.0;
+
+    if (Position.x > 0.001){
+        x = 1.0;
+    }
+    if (Position.y > 0.001){
+        y = 1.0;
+    }
+
+    gl_Position = vec4(x, y, 0.2, 1.0);
+
+    texCoord = Position.xy / OutSize;
+}
+```
 
 ## 读取玩家输入
 
@@ -759,7 +815,7 @@ https://www.shadertoy.com/
 
 **补充：目前坏掉了**
 
-**下载**：https://drive.google.com/open?id=1p_FOalR0LzKmQu9negjtaVzobO9YSeiu
+**下载**：[（国外链接）](https://drive.google.com/open?id=1p_FOalR0LzKmQu9negjtaVzobO9YSeiu)
 
 v0.1：初步发布
 
@@ -769,7 +825,7 @@ v0.1：初步发布
 
 ![example-1.png](https://forum.mczwlt.net/assets/uploads/files/1738562374306-8f3b6cdd-9393-49e2-85a9-29813b0052d4.png)
 
-[可以看过去的传送门](https://www.reddit.com/r/Minecraft/comments/b15dho/vanilla_portal_gun_in_latest_snapshot_with/)  
+[可以看过去的传送门（国外链接）](https://www.reddit.com/r/Minecraft/comments/b15dho/vanilla_portal_gun_in_latest_snapshot_with/)  
 *后处理着色器*  
 从一个角度捕获画面并显示在传送门中  
 *完整、复杂的着色器运用*
@@ -778,7 +834,7 @@ v0.1：初步发布
 
 ![example-2.png](https://forum.mczwlt.net/assets/uploads/files/1738562374942-17899154-f44c-463c-91b4-64f64aafc98c.png)
 
-[调试文字](https://drive.google.com/open?id=1n-SjTRv6D7CnYXok7A4cB9sqnSw00wGS)  
+[调试文字（国外链接）](https://drive.google.com/open?id=1n-SjTRv6D7CnYXok7A4cB9sqnSw00wGS)  
 *后处理着色器*  
 通过着色器向屏幕上写入文字或数字  
 *用来调试着色器的工具*
@@ -787,7 +843,7 @@ v0.1：初步发布
 
 ![example-3.png](https://forum.mczwlt.net/assets/uploads/files/1738562375688-27a0b216-6324-44c2-b869-4c4045b7b6c0.png)
 
-[屏幕方块](https://www.reddit.com/r/Minecraft/comments/9hj1l3/a_screen_that_displays_what_youre_seeing_in/)  
+[屏幕方块（国外链接）](https://www.reddit.com/r/Minecraft/comments/9hj1l3/a_screen_that_displays_what_youre_seeing_in/)  
 *后处理着色器*  
 简单的着色器，将 `minecraft:main` 缓存显示在一个方块上  
 *易于理解的着色器*
@@ -796,7 +852,7 @@ v0.1：初步发布
 
 ![example-4.png](https://forum.mczwlt.net/assets/uploads/files/1738562376936-b14e0f0c-032d-422c-be04-21fc8b1a255f.png)
 
-[水模糊/折射](https://drive.google.com/open?id=1WYt87rJ2GzMFCIQlsKRMemLthsIz9P9A)  
+[水模糊/折射（国外链接）](https://drive.google.com/open?id=1WYt87rJ2GzMFCIQlsKRMemLthsIz9P9A)  
 *后处理着色器*  
 加入水模糊与折射
 
@@ -804,7 +860,7 @@ v0.1：初步发布
 
 ![example-5.png](https://forum.mczwlt.net/assets/uploads/files/1738562377580-616be62e-cdea-466b-855d-b22f4b2a2beb.png)
 
-[起风了](https://gist.github.com/felixjones/d5bec1ab0c83ee134fa43a142692a09b#file-blusteryday-zip)  
+[起风了（国外链接）](https://gist.github.com/felixjones/d5bec1ab0c83ee134fa43a142692a09b#file-blusteryday-zip)  
 *核心着色器*  
 让树叶与水摇动  
 由 Mojang 的 Felix Jones 制作
@@ -813,7 +869,7 @@ v0.1：初步发布
 
 ![example-6.png](https://forum.mczwlt.net/assets/uploads/files/1738562378322-c954b119-33f4-4caa-9258-41a9d03e8aa5.png)
 
-[MipInf](https://gist.github.com/felixjones/d5bec1ab0c83ee134fa43a142692a09b#file-mipinf-zip)  
+[MipInf（国外链接）](https://gist.github.com/felixjones/d5bec1ab0c83ee134fa43a142692a09b#file-mipinf-zip)  
 *核心着色器*  
 将材质变为纯色  
 由 Mojang 的 Felix Jones 制作
